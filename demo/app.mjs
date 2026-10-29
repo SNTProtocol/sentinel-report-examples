@@ -1,0 +1,9 @@
+import {cases} from './cases.mjs';
+import {recordReviewAction,loadReviewActions} from './review-store.mjs';
+const $=id=>document.getElementById(id);let selected=cases[0];
+function list(id,items){$(id).replaceChildren(...items.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));}
+function history(){const events=loadReviewActions().filter(event=>event.case_id===selected.id);$('history').replaceChildren();if(!events.length){$('history').textContent='No reviews saved for this case.';return;}for(const event of events){const item=document.createElement('div');item.className='entry';item.textContent=`${event.action} · ${event.timestamp}\n${event.reason}`;$('history').append(item);}}
+function show(item){selected=item;$('case-title').textContent=item.title;$('amount').textContent=item.amount;$('signal').textContent=item.signal;list('facts',item.facts);list('unknown',item.unknown);$('note').value='';$('status').value='Information requested';$('message').textContent='';for(const button of $('cases').children)button.setAttribute('aria-pressed',String(button.dataset.id===item.id));history();}
+for(const item of cases){const button=document.createElement('button');button.type='button';button.dataset.id=item.id;button.textContent=`${item.id} · ${item.title}`;button.addEventListener('click',()=>show(item));$('cases').append(button);}
+$('review').addEventListener('submit',event=>{event.preventDefault();try{const storage=globalThis.localStorage;const probe='sentinel.public-demo.probe';storage.setItem(probe,'1');storage.removeItem(probe);recordReviewAction({caseId:selected.id,action:$('status').value,reviewer:'Demo reviewer',reason:$('note').value},storage);$('message').textContent='Saved in this browser only.';history();}catch{$('message').textContent='Could not save. Check your note and browser storage settings.';}});
+show(selected);

@@ -15,6 +15,20 @@ npm test
 
 The demo prints a summary with two observations returned, two missing observations, human review required and no underwriting decision. It makes no network requests and never sends a transaction.
 
+## Interactive review demo
+
+A small frontend extracted and adapted from the Sentinel investigation prototype is included in `demo/`. It uses three fictional cases and the prototype's browser-local review record module. It does not connect to the hosted product or private backend.
+
+From this repository directory, run:
+
+```sh
+python3 -m http.server 8080 --bind 127.0.0.1
+```
+
+Open **http://127.0.0.1:8080/demo/**. Select a case, inspect observations and unknowns, add a fictional note, and save a review status. Reload to see saved review history. Use an HTTP server rather than opening the HTML file directly.
+
+Browser-local records are not authenticated or tamper-proof. Do not enter confidential information. To remove them, clear this site's browser storage. This is a synthetic walkthrough, not live wallet investigation or insurance approval.
+
 ## What the code demonstrates
 
 - Missing information remains unknown rather than becoming a positive signal.

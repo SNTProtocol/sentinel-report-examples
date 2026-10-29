@@ -1,0 +1,6 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {recordReviewAction,loadReviewActions,reviewStorageKey} from '../demo/review-store.mjs';
+const memory=()=>{const data=new Map();return{getItem:key=>data.get(key)??null,setItem:(key,value)=>data.set(key,value)}};
+test('review note and status survive reload and retain case identity',()=>{const storage=memory();recordReviewAction({caseId:'SYN-001',action:'Escalated',reviewer:'Demo reviewer',reason:'Need context',timestamp:'2026-10-29T12:00:00Z'},storage);const events=loadReviewActions(storage);assert.equal(events[0].case_id,'SYN-001');assert.equal(events[0].reason,'Need context');assert.equal(events[0].action,'Escalated');assert.ok(reviewStorageKey().includes('.demo.'));});
+test('invalid decision or blank reason is rejected without saving',()=>{const storage=memory();for(const patch of [{action:'Approved insurance'},{reason:' '}])assert.throws(()=>recordReviewAction({caseId:'SYN-001',action:'Closed',reviewer:'Demo reviewer',reason:'Example',...patch},storage));assert.deepEqual(loadReviewActions(storage),[]);});
+test('corrupt browser storage does not crash history loading',()=>{assert.deepEqual(loadReviewActions({getItem:()=>'{bad json'}),[]);});
