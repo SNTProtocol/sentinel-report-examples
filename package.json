@@ -1,0 +1,9 @@
+{
+  "name": "sentinel-report-examples",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Synthetic transaction-evidence reports and an offline summary example from SNT Protocol.",
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "node --test", "demo": "node examples/demo.mjs" }
+}

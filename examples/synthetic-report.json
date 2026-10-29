@@ -1,0 +1,17 @@
+{
+  "schema_version": "example-0.1",
+  "synthetic": true,
+  "report_id": "synthetic-example-001",
+  "declared_intent": {
+    "chain": "Ethereum",
+    "asset": "USDT",
+    "amount": "1000.00",
+    "expected_delivery": "Caller-declared token delivery; not verified"
+  },
+  "observations": [
+    { "name": "payer_usdt_balance_raw", "status": "observed", "value": "1500000000", "source": "synthetic_fixture" },
+    { "name": "recipient_contract_code", "status": "observed", "value": "no_code", "source": "synthetic_fixture" },
+    { "name": "counterparty_identity", "status": "unknown", "value": null, "source": "not_checked" },
+    { "name": "future_token_delivery", "status": "unknown", "value": null, "source": "not_predictable_from_fixture" }
+  ]
+}
